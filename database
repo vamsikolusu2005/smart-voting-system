@@ -1,0 +1,57 @@
+CREATE TABLE voters (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  aadhar VARCHAR(20) UNIQUE NOT NULL,
+  voter_id VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  mobile VARCHAR(20) NOT NULL,
+  location VARCHAR(255),
+  registered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  is_verified BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE otps (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  voter_id INT,
+  otp VARCHAR(6),
+  expires_at DATETIME,
+  used BOOLEAN DEFAULT FALSE,
+  FOREIGN KEY (voter_id) REFERENCES voters(id)
+);
+
+CREATE TABLE faces (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  voter_id INT,
+  image_path VARCHAR(255),
+  FOREIGN KEY (voter_id) REFERENCES voters(id)
+);
+
+CREATE TABLE candidates (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255),
+  party VARCHAR(255),
+  symbol VARCHAR(255)
+);
+
+CREATE TABLE votes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  voter_id INT,
+  candidate_id INT,
+  voted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  location VARCHAR(255),
+  ip VARCHAR(45),
+  FOREIGN KEY (voter_id) REFERENCES voters(id),
+  FOREIGN KEY (candidate_id) REFERENCES candidates(id)
+);
+
+CREATE TABLE complaints (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  voter_id INT,
+  complaint_text TEXT,
+  submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE feedbacks (
+  id INT AUTO_INCREAMENT PRIMARY KEY,
+  voter_id INT,
+  feedback_text TEXT;
+  submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
